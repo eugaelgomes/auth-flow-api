@@ -1,4 +1,4 @@
-const { MailService } = require("@/services/email/mail_config");
+const { MailService } = require("@/services/email/mail-service");
 
 async function mail_rescue_pass(email, token) {
   // Verifica o ambiente atual

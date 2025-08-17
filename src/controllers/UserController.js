@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const UserRepository = require("@/repositories/UserRepository");
-const EmailService = require("@/services/EmailService");
+const welcome_mail_message = require("@/services/email/greetings/welcome-mail");
 
 const saltRounds = 12;
 
@@ -61,7 +61,7 @@ class UserController {
 
       // Envio do email de boas-vindas
       try {
-        await EmailService.sendWelcomeEmail(name, email, username);
+        await welcome_mail_message(name, email, username);
       } catch (mailError) {
         console.error("Error sending welcome email:", mailError);
         // Não interrompe o fluxo se o email falhar
