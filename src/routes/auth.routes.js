@@ -2,7 +2,7 @@ const express = require("express");
 const { body } = require("express-validator");
 const { verifyToken } = require("@/middlewares/auth/auth-middleware");
 const AuthController = require("@/controllers/auth-controller");
-const loginLimiter = require("@/middlewares/limiters");
+const { loginLimiter } = require("@/middlewares/limiters");
 const toString = require("@/middlewares/stringfy");
 
 const router = express.Router();
