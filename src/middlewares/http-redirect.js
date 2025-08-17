@@ -9,4 +9,4 @@ const https_redirect = [
   },
 ];
 
-module.exports = { https_redirect };
+module.exports = https_redirect;

@@ -2,7 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const { getClientIp } = require("@/middlewares/ip-address");
-const { limiters } = require("@/middlewares/limiters");
+const { loginLimiter } = require("@/middlewares/limiters");
 const { sessionMiddleware } = require("@/middlewares/session");
 
 function configureGlobalMiddlewares(app) {
@@ -18,6 +18,8 @@ function configureGlobalMiddlewares(app) {
 
   // Middleware IP
   app.use(getClientIp);
+  
+  app.use(loginLimiter);
 
   // CORS Setup
   const allowedOrigins = (process.env.ALLOWED_ORIGINS || "").split(",");
@@ -57,7 +59,6 @@ function configureGlobalMiddlewares(app) {
   );
 
   // Limiters
-  app.use(limiters);
 }
 
 module.exports = configureGlobalMiddlewares;

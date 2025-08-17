@@ -206,7 +206,7 @@ let mailOptions = {
     `,
     };
     await MailService().sendMail(mailOptions);
-    return { success: True };
+    return { success: true };
   } catch (error) {
     return { success: false, error: "Failed to send welcome email." };
   }

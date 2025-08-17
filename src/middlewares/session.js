@@ -2,11 +2,10 @@ const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const { pool } = require("@/services/db/db-connection");
 
-const sessionMiddleware = session({
+const sessionConfig = {
   store: new pgSession({
     pool,
-    tableName: "sessions",
-    createTableIfMissing: true,
+    tableName: "sessions"
   }),
   name: "auth.sid", // Cookie session name
   secret: process.env.SESSION_SECRET || "sua_chave_secreta",
@@ -19,6 +18,8 @@ const sessionMiddleware = session({
     sameSite: "lax",
     maxAge: 1000 * 60 * 60 * 24,
   },
-});
+};
+
+const sessionMiddleware = session(sessionConfig);
 
 module.exports = { sessionMiddleware };
