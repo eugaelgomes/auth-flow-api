@@ -1,8 +1,8 @@
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const PasswordRepository = require("@/repositories/PasswordRepository");
-const mail_rescue_pass = require("@/services/email/token/mail-sender");
+const PasswordRepository = require("@/repositories/password-repository");
+const mail_rescue_pass = require("@/services/email/templates/rescue-pass-mail");
 
 const call_help_url = "https://app.codaweb.com.br/auth/forget-password";
 

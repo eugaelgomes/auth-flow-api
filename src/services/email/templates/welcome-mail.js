@@ -1,4 +1,4 @@
-const { MailService } = require("@/services/email/mail-service");
+const { MailService } = require("../mail-service");
 
 async function welcome_mail_message(name, email, username) {
   let mailOptions = {

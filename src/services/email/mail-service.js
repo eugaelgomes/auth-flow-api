@@ -1,6 +1,6 @@
-import nodemailer from "nodemailer";
+const nodemailer = require("nodemailer");
 
-export function MailService() {
+function MailService() {
   try {
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOSTNAME,
@@ -16,3 +16,5 @@ export function MailService() {
     throw error;
   }
 }
+
+module.exports = { MailService };

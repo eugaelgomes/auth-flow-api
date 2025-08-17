@@ -21,7 +21,7 @@ class UserRepository {
     return results[0];
   }
 
-  // Unused route** 
+  // Unused route**
   async findByGithubId(githubId) {
     const query = `SELECT user_db_id, username, full_name FROM users WHERE github_id = $1 LIMIT 1`;
     const results = await executeQuery(query, [githubId]);

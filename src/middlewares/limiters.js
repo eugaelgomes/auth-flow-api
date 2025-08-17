@@ -8,7 +8,9 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
   keyGenerator: (req) => req.body.username || req.ip, // Block by user AND IP
   handler: (req, res) => {
-    res.status(429).json({ message: "Too many attempts. Please wait 15 minutes." });
+    res
+      .status(429)
+      .json({ message: "Too many attempts. Please wait 15 minutes." });
   },
   skipSuccessfulRequests: true, // Reset on successful login
 });

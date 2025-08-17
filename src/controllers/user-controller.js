@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const UserRepository = require("@/repositories/UserRepository");
-const welcome_mail_message = require("@/services/email/greetings/welcome-mail");
+const UserRepository = require("@/repositories/user-repository");
+const welcome_mail_message = require("@/services/email/templates/welcome-mail");
 
 const saltRounds = 12;
 

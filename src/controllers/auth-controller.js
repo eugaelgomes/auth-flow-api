@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const axios = require("axios");
-const AuthRepository = require("@/repositories/AuthRepository");
+const AuthRepository = require("@/repositories/auth-repository");
 
 const SECRET_KEY = process.env.SECRET_KEY_VARIABLE;
 
@@ -58,18 +58,18 @@ class AuthController {
           username
         );
       } catch (error) {
-        console.error("Erro ao salvar geolocalização:", error);
+        console.error("Error saving geolocation:", error);
       }
       // Save user login information & redirect users
       return res.status(200).json({
         ...payload,
         token,
-        message: "Login realizado com sucesso!!!",
+        message: "Login successful!",
         redirectUrl: "/dashboard",
       });
     } catch (error) {
-      console.error("Erro durante o login:", error);
-      return res.status(500).send("Erro interno do servidor");
+      console.error("Error during login:", error);
+      return res.status(500).send("Internal Server Error");
     }
   }
 

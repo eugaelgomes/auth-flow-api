@@ -39,6 +39,7 @@ async function executeQuery(sql, params = []) {
 }
 
 module.exports = {
+  pool, // exporta o pool aqui
   getConnection,
   executeQuery,
 };
