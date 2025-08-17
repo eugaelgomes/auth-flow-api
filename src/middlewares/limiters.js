@@ -15,4 +15,4 @@ const loginLimiter = rateLimit({
   skipSuccessfulRequests: true, // Reset on successful login
 });
 
-module.exports = loginLimiter;
+module.exports = { loginLimiter };

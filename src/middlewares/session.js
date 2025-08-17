@@ -5,20 +5,20 @@ const { pool } = require("@/services/db/db-connection");
 const sessionMiddleware = session({
   store: new pgSession({
     pool,
-    tableName: "sessions", // Nome da tabela para armazenar as sessões
-    createTableIfMissing: true, // Cria a tabela se não existir
+    tableName: "sessions",
+    createTableIfMissing: true,
   }),
-  name: "auth.sid", // Nome do cookie de sessão
+  name: "auth.sid", // Cookie session name
   secret: process.env.SESSION_SECRET || "sua_chave_secreta",
   resave: false,
   saveUninitialized: false,
-  rolling: true, // Reinicia o tempo de expiração a cada requisição
+  rolling: true, 
   cookie: {
-    httpOnly: true, // Previne acesso ao cookie via JavaScript
+    httpOnly: true, 
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax", // Proteção contra ataques CSRF
-    maxAge: 1000 * 60 * 60 * 24, // 1 dia
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24,
   },
 });
 
-module.exports = sessionMiddleware;
+module.exports = { sessionMiddleware };

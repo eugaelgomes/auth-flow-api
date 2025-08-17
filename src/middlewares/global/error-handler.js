@@ -1,7 +1,7 @@
 const errorHandler = {
-  // Middleware de erro 404 para rotas não encontradas
+  // not found handler
   notFoundHandler: (req, res, next) => {
-    const err = new Error(`Rota "${req.originalUrl}" não encontrada`);
+    const err = new Error(`Route "${req.originalUrl}" not found`);
     err.statusCode = 404;
     next(err);
   },

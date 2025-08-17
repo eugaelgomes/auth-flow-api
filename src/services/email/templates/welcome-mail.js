@@ -1,11 +1,12 @@
 const { MailService } = require("../mail-service");
 
-async function welcome_mail_message(name, email, username) {
-  let mailOptions = {
-    from: "support codaweb <support@codaweb.com.br>",
-    to: email,
-    subject: "Welcome to Codaweb (Fictional App by gaelgomes.dev)",
-    html: `
+async function welcome_message(nome, email, username) {
+  try {
+    let mailOptions = {
+      from: "support codaweb <support@codaweb.com>",
+      to: email,
+      subject: "Welcome to CodaWeb!",
+      html: `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -149,7 +150,7 @@ async function welcome_mail_message(name, email, username) {
             <tr>
               <td>
                 <h2>Welcome to CodaWeb!</h2>
-                <p style="margin-bottom: 20px;">Hello ${name},</p>
+                <p style="margin-bottom: 20px;">Hello ${nome},</p>
                 <p style="margin-bottom: 20px;">Your registration was successful. We are very happy to have you with us in the CodaWeb community, your new space to learn and grow in technology.</p>
                 <p>Your username is: <strong>${username}</strong></p>
               </td>
@@ -183,9 +184,12 @@ async function welcome_mail_message(name, email, username) {
   </center>
 </body>
 </html>`,
-  };
-  const info = await MailService().sendMail(mailOptions);
-  console.log("Email sent: " + info.response);
+    };
+    await MailService().sendMail(mailOptions);
+    return { success: True };
+  } catch (error) {
+    return { success: false, error: "Failed to send welcome email." };
+  }
 }
 
-module.exports = welcome_mail_message;
+module.exports = { welcome_message };

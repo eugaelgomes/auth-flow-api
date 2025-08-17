@@ -16,4 +16,4 @@ const getClientIp = (req, res, next) => {
   next();
 };
 
-module.exports = getClientIp;
+module.exports = { getClientIp };

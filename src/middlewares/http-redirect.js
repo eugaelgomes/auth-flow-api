@@ -1,5 +1,3 @@
-const { error } = require("console");
-
 const https_redirect = [
   async (req, res) => {
     if (req.headers["x-forwarded-proto"] !== "http") {
@@ -11,4 +9,4 @@ const https_redirect = [
   },
 ];
 
-module.exports = https_redirect;
+module.exports = { https_redirect };

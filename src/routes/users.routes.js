@@ -1,7 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const UserController = require("@/controllers/user-controller");
-const { verifyToken, isAdmin } = require("@/middlewares/auth/auth-middleware");
+const { isAdmin } = require("@/middlewares/auth/auth-middleware");
 
 const router = express.Router();
 

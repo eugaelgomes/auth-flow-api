@@ -58,7 +58,7 @@ class AuthController {
           username
         );
       } catch (error) {
-        console.error("Error saving geolocation:", error);
+        console.error("Error saving geolocation:");
       }
       // Save user login information & redirect users
       return res.status(200).json({
@@ -68,7 +68,6 @@ class AuthController {
         redirectUrl: "/dashboard",
       });
     } catch (error) {
-      console.error("Error during login:", error);
       return res.status(500).send("Internal Server Error");
     }
   }
@@ -87,7 +86,6 @@ class AuthController {
         role: user.role_id,
       });
     } catch (error) {
-      console.error("Error fetching authenticated user:", error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -95,7 +93,6 @@ class AuthController {
   async logout(req, res) {
     req.session.destroy((err) => {
       if (err) {
-        console.error("Error logging out:", err);
         return res.status(500).json({ message: "Error logging out" });
       }
       res.clearCookie("token");
@@ -120,7 +117,6 @@ class AuthController {
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching geolocation:", error);
       return null;
     }
   }

@@ -1,9 +1,9 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const getClientIp = require("@/middlewares/ip-address");
-const limiters = require("@/middlewares/limiters");
-const sessionMiddleware = require("@/middlewares/session");
+const { getClientIp } = require("@/middlewares/ip-address");
+const { limiters } = require("@/middlewares/limiters");
+const { sessionMiddleware } = require("@/middlewares/session");
 
 function configureGlobalMiddlewares(app) {
   // Session

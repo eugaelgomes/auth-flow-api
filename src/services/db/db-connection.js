@@ -16,7 +16,6 @@ const pool = new Pool({
 async function getConnection() {
   try {
     const client = await pool.connect();
-    console.log("Pool connection is OK!");
     return client;
   } catch (error) {
     console.error("Pool connection failed:", error.message);
@@ -30,16 +29,10 @@ async function executeQuery(sql, params = []) {
     const { rows } = await client.query(sql, params);
     return rows;
   } catch (error) {
-    console.error("Query execution error:", error.message);
     throw error;
   } finally {
     client.release();
-    console.log("Connection released back to pool");
   }
 }
 
-module.exports = {
-  pool, // exporta o pool aqui
-  getConnection,
-  executeQuery,
-};
+module.exports = { pool, getConnection, executeQuery };

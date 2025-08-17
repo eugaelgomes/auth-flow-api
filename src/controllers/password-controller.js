@@ -35,10 +35,14 @@ class PasswordController {
       const currentDateTime = getCurrentDateTimeUTCMinus3();
 
       // Desativa tokens antigos
-      await PasswordRepository.deactivateOldTokens(email);
+      await PasswordRepository.deactivateOldTokens(userExists.user_db_id);
 
       // Insere novo token
-      await PasswordRepository.createToken(email, token, currentDateTime);
+      await PasswordRepository.createToken(
+        userExists.user_db_id,
+        token,
+        currentDateTime
+      );
 
       // Envia o email com o token
       const emailResult = await mail_rescue_pass(email, token);
@@ -61,11 +65,9 @@ class PasswordController {
   }
 
   async resetPassword(req, res) {
-    console.log("=== STARTING PASSWORD RESET PROCESS ===");
     const { token, password: newPassword } = req.body;
 
     if (!token || !newPassword) {
-      console.log("ERROR: Token or password not provided");
       return res.status(400).json({
         message: "Token and new password are required",
         received: {
@@ -77,25 +79,15 @@ class PasswordController {
 
     try {
       const tokenRecord = await PasswordRepository.findTokenByValue(token);
-      console.log(
-        "Token query result:",
-        tokenRecord ? "Token found" : "Token not found"
-      );
-
       if (!tokenRecord) {
-        console.log("ERROR: Invalid or non-existent token");
         return res.status(400).json({
           message: `Invalid token, please try again ${call_help_url}`,
         });
       }
 
-      const email = tokenRecord.email;
-      console.log("Email associated with token:", email);
-
-      const userExists = await PasswordRepository.findUserByEmail(email);
-      console.log(
-        "User query result:",
-        userExists ? "User found" : "User not found"
+      // Busca o usuário pelo ID associado ao token
+      const userExists = await PasswordRepository.findUserById(
+        tokenRecord.user_id
       );
 
       if (!userExists) {
@@ -105,24 +97,17 @@ class PasswordController {
         });
       }
 
-      console.log("Generating hash for new password");
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      console.log("Hash generated successfully");
 
-      console.log("Updating user password");
-      await PasswordRepository.updateUserPassword(email, hashedPassword);
-      console.log("Password updated successfully");
-
-      console.log("Removing used token from database");
-      await PasswordRepository.deleteToken(token);
-      console.log("Token removed successfully");
-
-      console.log("=== PASSWORD RESET COMPLETED SUCCESSFULLY ===");
+      await PasswordRepository.updateUserPassword(
+        userExists.user_db_id,
+        hashedPassword
+      );
+      await PasswordRepository.deactivateToken(token);
       return res.status(200).json({
         message: "Password updated successfully!",
       });
     } catch (error) {
-      console.error("ERROR during password reset:", error);
       return res.status(500).json({
         message: "Error processing request",
         error: error.message,

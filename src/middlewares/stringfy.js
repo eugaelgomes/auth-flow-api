@@ -8,4 +8,4 @@ const toString = async (req, res, next) => {
   next();
 };
 
-module.exports = toString;
+module.exports = { toString };

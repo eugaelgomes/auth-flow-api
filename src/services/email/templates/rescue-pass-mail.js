@@ -1,18 +1,15 @@
 const { MailService } = require("@/services/email/mail-service");
 
 async function mail_rescue_pass(email, token) {
-  // Verifica o ambiente atual
   const env = process.env.NODE_ENV || "development";
-
-  // Define o link de redefinição baseado no ambiente
   let resetLink;
   if (env === "production") {
     resetLink = `https://codaweb.com.br/auth/reset-password?token=${token}`;
   } else {
     resetLink = `http://localhost:3000/?reset_token=${token}`;
   }
-
-  let mailOptions = {
+try {
+let mailOptions = {
     from: "support codaweb <support@codaweb.com.br>",
     to: email,
     subject: "Password Recovery",
@@ -207,16 +204,11 @@ async function mail_rescue_pass(email, token) {
 </body>
 </html>
     `,
-  };
-
-  try {
-    const transporter = MailService();
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent: " + info.response);
-    return { success: true };
+    };
+    await MailService().sendMail(mailOptions);
+    return { success: True };
   } catch (error) {
-    console.error("Error sending email:", error);
-    return { success: false, error: error.message };
+    return { success: false, error: "Failed to send welcome email." };
   }
 }
 

@@ -6,16 +6,14 @@ function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    console.warn("Atenção: Nenhum token foi enviado na requisição.");
     return res
       .status(401)
-      .json({ message: "Acesso negado. Token não fornecido." });
+      .json({ message: "Access denied. Token not provided." });
   }
 
   const token = authHeader.split(" ")[1];
 
   if (!token) {
-    console.warn("Attention: Malformed or missing token.");
     return res.status(401).json({ message: "Invalid token format." });
   }
 

@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const UserRepository = require("@/repositories/user-repository");
-const welcome_mail_message = require("@/services/email/templates/welcome-mail");
+const welcome_message = require("@/services/email/templates/welcome-mail");
 
 const saltRounds = 12;
 
@@ -61,7 +61,7 @@ class UserController {
 
       // Envio do email de boas-vindas
       try {
-        await welcome_mail_message(name, email, username);
+        await welcome_message(name, email, username);
       } catch (mailError) {
         console.error("Error sending welcome email:", mailError);
         // Não interrompe o fluxo se o email falhar
@@ -83,7 +83,6 @@ class UserController {
       const users = await UserRepository.findAll();
       res.status(200).json(users);
     } catch (error) {
-      console.error("Error fetching users:", error);
       res.status(500).send("Internal server error.");
     }
   }
