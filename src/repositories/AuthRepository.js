@@ -1,6 +1,7 @@
 const { executeQuery } = require("@/services/db/db-connection");
 
 class AuthRepository {
+  // Query to find user by username or email
   async findUserByUsername(username) {
     const query = `
       SELECT user_db_id, user_uid, full_name, email, password, role_id 
@@ -12,6 +13,7 @@ class AuthRepository {
     return results[0];
   }
 
+  // Save location logs for user
   async logUserLocation(userId, ip, timestamp, location, userAgent) {
     const query = `
       INSERT INTO user_location_logs (user_id, ip_address, created_at, location, user_agent) 

@@ -9,28 +9,28 @@ const userValidation = [
   body("name")
     .trim()
     .matches(/^[a-zA-Z\s]+$/)
-    .withMessage("Somente letras são permitidas.")
+    .withMessage("Only letters are allowed.")
     .isLength({ min: 1, max: 1000 })
     .escape()
-    .withMessage("O nome não pode estar vazio."),
+    .withMessage("Name cannot be empty."),
   body("username")
     .trim()
     .matches(/^[a-zA-Z0-9._-]+$/)
     .withMessage(
-      "Caracteres inválidos, somente permitido letras, números e ., - ou _"
+      "Invalid characters, only letters, numbers, ., - or _ are allowed"
     )
     .isLength({ min: 6 })
     .escape()
-    .withMessage("O usuário deve conter no mínimo seis (6) caracteres."),
+    .withMessage("Username must be at least six (6) characters long."),
   body("email")
     .isEmail()
     .normalizeEmail({ all_lowercase: true, gmail_remove_dots: false })
     .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-    .withMessage("O e-mail é inválido!"),
+    .withMessage("Email is invalid."),
   body("password")
     .isStrongPassword()
     .withMessage(
-      "A senha deve conter no mínimo oito (8) caracters, contendo letras, números e símbolos."
+      "Password must contain at least eight (8) characters, including letters, numbers, and symbols."
     ),
 ];
 

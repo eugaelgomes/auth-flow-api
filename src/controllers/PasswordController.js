@@ -18,17 +18,17 @@ class PasswordController {
     if (!errors.isEmpty()) {
       return res
         .status(400)
-        .json({ message: "E-mail inválido", errors: errors.array() });
+        .json({ message: "Invalid email", errors: errors.array() });
     }
 
     const email = req.body.email;
 
     try {
-      console.log(`Verificando existência do e-mail: ${email}`);
+      console.log(`Verifying email existence: ${email}`);
       const userExists = await PasswordRepository.findUserByEmail(email);
 
       if (!userExists) {
-        return res.status(400).json({ message: "Usuário não encontrado." });
+        return res.status(400).json({ message: "User not found." });
       }
 
       const token = crypto.randomBytes(10).toString("hex");
@@ -45,29 +45,29 @@ class PasswordController {
 
       if (!emailResult.success) {
         return res.status(500).json({
-          message: "Erro ao enviar e-mail. Por favor, tente novamente.",
+          message: "Error sending email. Please try again.",
         });
       }
 
       return res.status(200).json({
-        message: "Instruções de recuperação enviadas para seu e-mail.",
+        message: "Recovery instructions sent to your email.",
       });
     } catch (error) {
-      console.error("Erro na recuperação de senha:", error);
+      console.error("Error recovering password:", error);
       return res.status(500).json({
-        message: "Erro ao processar solicitação. Tente novamente mais tarde.",
+        message: "Error processing request. Please try again later.",
       });
     }
   }
 
   async resetPassword(req, res) {
-    console.log("=== INÍCIO DO PROCESSAMENTO DE REDEFINIÇÃO DE SENHA ===");
+    console.log("=== STARTING PASSWORD RESET PROCESS ===");
     const { token, password: newPassword } = req.body;
 
     if (!token || !newPassword) {
-      console.log("ERRO: Token ou senha não fornecidos");
+      console.log("ERROR: Token or password not provided");
       return res.status(400).json({
-        message: "Token e nova senha são obrigatórios",
+        message: "Token and new password are required",
         received: {
           token: !!token,
           password: !!newPassword,
@@ -78,53 +78,53 @@ class PasswordController {
     try {
       const tokenRecord = await PasswordRepository.findTokenByValue(token);
       console.log(
-        "Resultado da consulta de token:",
-        tokenRecord ? "Token encontrado" : "Token não encontrado"
+        "Token query result:",
+        tokenRecord ? "Token found" : "Token not found"
       );
 
       if (!tokenRecord) {
-        console.log("ERRO: Token inválido ou não encontrado");
+        console.log("ERROR: Invalid or non-existent token");
         return res.status(400).json({
-          message: `Token inválido, tente novamente ${call_help_url}`,
+          message: `Invalid token, please try again ${call_help_url}`,
         });
       }
 
       const email = tokenRecord.email;
-      console.log("Email associado ao token:", email);
+      console.log("Email associated with token:", email);
 
       const userExists = await PasswordRepository.findUserByEmail(email);
       console.log(
-        "Resultado da consulta de usuário:",
-        userExists ? "Usuário encontrado" : "Usuário não encontrado"
+        "User query result:",
+        userExists ? "User found" : "User not found"
       );
 
       if (!userExists) {
-        console.log("ERRO: Email não encontrado na base de dados");
+        console.log("ERROR: Email not found in database");
         return res.status(400).json({
-          message: "Email não encontrado.",
+          message: "Email not found.",
         });
       }
 
-      console.log("Gerando hash da nova senha");
+      console.log("Generating hash for new password");
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      console.log("Hash gerado com sucesso");
+      console.log("Hash generated successfully");
 
-      console.log("Atualizando senha do usuário");
+      console.log("Updating user password");
       await PasswordRepository.updateUserPassword(email, hashedPassword);
-      console.log("Senha atualizada com sucesso");
+      console.log("Password updated successfully");
 
-      console.log("Removendo token utilizado do banco de dados");
+      console.log("Removing used token from database");
       await PasswordRepository.deleteToken(token);
-      console.log("Token removido com sucesso");
+      console.log("Token removed successfully");
 
-      console.log("=== REDEFINIÇÃO DE SENHA CONCLUÍDA COM SUCESSO ===");
+      console.log("=== PASSWORD RESET COMPLETED SUCCESSFULLY ===");
       return res.status(200).json({
-        message: "Senha atualizada com sucesso!",
+        message: "Password updated successfully!",
       });
     } catch (error) {
-      console.error("ERRO durante a redefinição de senha:", error);
+      console.error("ERROR during password reset:", error);
       return res.status(500).json({
-        message: "Erro ao processar a solicitação",
+        message: "Error processing request",
         error: error.message,
       });
     }

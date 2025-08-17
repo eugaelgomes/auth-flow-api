@@ -23,12 +23,12 @@ class AuthController {
       const user = await AuthRepository.findUserByUsername(username);
 
       if (!user) {
-        return res.status(401).send("Usuário não encontrado!");
+        return res.status(401).send("User not found!");
       }
 
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        return res.status(401).send("Senha incorreta, tente novamente!");
+        return res.status(401).send("Incorrect password, please try again!");
       }
 
       const payload = {
@@ -47,7 +47,7 @@ class AuthController {
       req.session.user = payload;
       req.session.token = token;
 
-      // Salva informações de geolocalização
+      // Save on database geolocation information
       try {
         const geoData = await this.getGeolocation(clientIp);
         await AuthRepository.logUserLocation(
@@ -60,7 +60,7 @@ class AuthController {
       } catch (error) {
         console.error("Erro ao salvar geolocalização:", error);
       }
-
+      // Save user login information & redirect users
       return res.status(200).json({
         ...payload,
         token,
@@ -77,7 +77,7 @@ class AuthController {
     try {
       const user = await AuthRepository.findUserByUsername(req.user.username);
       if (!user) {
-        return res.status(404).json({ message: "Usuário não encontrado" });
+        return res.status(404).json({ message: "User not found" });
       }
 
       return res.json({
@@ -87,19 +87,19 @@ class AuthController {
         role: user.role_id,
       });
     } catch (error) {
-      console.error("Erro ao buscar usuário autenticado:", error);
-      return res.status(500).json({ message: "Erro interno do servidor" });
+      console.error("Error fetching authenticated user:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
   async logout(req, res) {
     req.session.destroy((err) => {
       if (err) {
-        console.error("Erro ao fazer logout:", err);
-        return res.status(500).json({ message: "Erro ao fazer logout" });
+        console.error("Error logging out:", err);
+        return res.status(500).json({ message: "Error logging out" });
       }
       res.clearCookie("token");
-      res.status(200).json({ message: "Logout realizado com sucesso" });
+      res.status(200).json({ message: "Logout successful" });
     });
   }
 
@@ -120,7 +120,7 @@ class AuthController {
       );
       return response.data;
     } catch (error) {
-      console.error("Erro ao obter geolocalização:", error);
+      console.error("Error fetching geolocation:", error);
       return null;
     }
   }

@@ -12,7 +12,7 @@ export function MailService() {
       },
     });
   } catch (error) {
-    console.error("Falha ao criar servidor de e-mails:", error);
+    console.error("Fail to create email transport:", error);
     throw error;
   }
 }

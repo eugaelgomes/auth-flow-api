@@ -13,7 +13,7 @@ const app = express();
 
 //app.use(ip_address.mw());
 
-// Configuração de sessão
+// Session configuration
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -33,7 +33,7 @@ const corsOptions = {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error("Origem não permitida!"));
+      callback(new Error("Origin not allowed!"));
       console.log(origin);
     }
   },
@@ -69,10 +69,10 @@ app.use(
   })
 );
 
-// Limitador de tráfego suspeito
+// Suspicious traffic limiter
 app.use(limiters);
 
-// Rotas funcionais da API
+// API functional routes
 app.use("/auth", routers);
 app.use((err, req, res, next) => {
   // if (process.env.NODE_ENV !== "production") {
@@ -81,7 +81,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
     error: {
-      message: err.message || "Ocorreu um erro interno no servidor",
+      message: err.message || "An internal server error occurred",
     },
   });
 });

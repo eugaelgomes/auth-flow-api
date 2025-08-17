@@ -1,5 +1,5 @@
 const getClientIp = (req, res, next) => {
-  // Tenta obter o IP de várias fontes possíveis
+  // Collect ip of the client
   req.clientIp =
     req.headers["x-forwarded-for"]?.split(",")[0] ||
     req.headers["x-real-ip"] ||
@@ -8,7 +8,7 @@ const getClientIp = (req, res, next) => {
     req.connection.socket?.remoteAddress ||
     "127.0.0.1";
 
-  // Remove IPv6 prefix se existir
+  // Remove IPv6 prefix if it exists
   if (req.clientIp.substr(0, 7) === "::ffff:") {
     req.clientIp = req.clientIp.substr(7);
   }

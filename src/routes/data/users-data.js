@@ -48,3 +48,5 @@ router.get("/users", isAdmin, async (req, res) => {
 });
 
 module.exports = router;
+
+// ** Unused routes can be removed or implemented for future use**

@@ -43,11 +43,11 @@ class UserController {
           (user) => user.email === email && user.usuario === username
         )
       ) {
-        return res.status(401).send("E-mail e usuário já existente!");
+        return res.status(401).send("User and email already exists!");
       } else if (existingUsers.some((user) => user.email === email)) {
-        return res.status(401).send("Este e-mail já está sendo utilizado!");
+        return res.status(401).send("Email is already in use!");
       } else if (existingUsers.some((user) => user.usuario === username)) {
-        return res.status(401).send("Este usuário já está sendo utilizado!");
+        return res.status(401).send("Username is already in use!");
       }
 
       await UserRepository.createUser(
@@ -67,13 +67,13 @@ class UserController {
         // Não interrompe o fluxo se o email falhar
       }
 
-      res.status(201).send("Usuário cadastrado com sucesso!");
+      res.status(201).send("User registered successfully!");
     } catch (error) {
-      console.error("Ocorreu um erro durante o processo", error);
+      console.error("An error occurred during the process", error);
       res
         .status(500)
         .send(
-          "Houve um erro interno. Tente novamente mais tarde ou fale com o suporte."
+          "An internal error occurred. Please try again later or contact support."
         );
     }
   }
@@ -83,8 +83,8 @@ class UserController {
       const users = await UserRepository.findAll();
       res.status(200).json(users);
     } catch (error) {
-      console.error("Erro ao buscar usuários:", error);
-      res.status(500).send("Erro interno do servidor.");
+      console.error("Error fetching users:", error);
+      res.status(500).send("Internal server error.");
     }
   }
 }

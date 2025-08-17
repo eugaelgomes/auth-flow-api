@@ -6,3 +6,5 @@ const baseFolder = path.resolve(__dirname, "..");
 moduleAlias.addAliases({
   "@": baseFolder,
 });
+
+// To apply alias import

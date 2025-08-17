@@ -5,13 +5,13 @@ const passwordRoutes = require("@/routes/password.routes");
 
 const router = express.Router();
 
-// Rotas de autenticação
+// Authentication routes
 router.use("/auth", authRoutes);
 
-// Rotas de usuários
+// User routes
 router.use("/users", userRoutes);
 
-// Rotas de senha
+// Password routes
 router.use("/password", passwordRoutes);
 
 module.exports = router;

@@ -4,10 +4,10 @@ class EmailService {
   async sendWelcomeEmail(name, email, username) {
     try {
       await welcome_mail_message(name, email, username);
-      console.log("Email de boas-vindas enviado com sucesso para:", email);
+      console.log("Welcome mail sent to:", email);
       return true;
     } catch (error) {
-      console.error("Erro ao enviar email de boas-vindas:", error);
+      console.error("Error sending welcome email:", error);
       return false;
     }
   }
