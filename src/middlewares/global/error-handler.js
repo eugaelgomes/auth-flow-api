@@ -8,12 +8,11 @@ const errorHandler = {
 
   // Global error handler
   globalErrorHandler: (err, req, res, next) => {
-    // Log in development
-    if (process.env.NODE_ENV !== "production") {
-      console.error(err.stack);
+    // Only log if not 404 and in development
+    if (process.env.NODE_ENV === "development" || err.statusCode >= 500) {
+      console.error(err.stack || err);
     }
 
-    // Error response formatting
     res.status(err.statusCode || 500).json({
       error: {
         message: err.message || "Internal Server Error",
