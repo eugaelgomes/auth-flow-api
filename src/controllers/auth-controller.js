@@ -7,13 +7,11 @@ const AuthRepository = require("@/repositories/auth-repository");
 const SECRET_KEY = process.env.SECRET_KEY_VARIABLE;
 
 const CLIENT_IP = process.env.TOKEN_IP;
-
 class AuthController {
   async login(req, res) {
     const { username, password } = req.body;
     const clientIp = req.clientIp;
     const serverTime = new Date().toISOString();
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -37,6 +35,7 @@ class AuthController {
         email: user.email,
         name: user.full_name,
         role: user.role_id,
+        role: user.role_name,
       };
 
       const token = jwt.sign(payload, SECRET_KEY, {
@@ -61,11 +60,13 @@ class AuthController {
         console.error("Error saving geolocation:");
       }
       // Save user login information & redirect users
+      console.log("User login successful:", { userId: user.user_db_id, username });
       return res.status(200).json({
         ...payload,
         token,
         message: "Login successful!",
         redirectUrl: "/dashboard",
+        // return: { success: true },
       });
     } catch (error) {
       return res.status(500).send("Internal Server Error");
@@ -84,6 +85,7 @@ class AuthController {
         username: user.user_uid,
         name: user.full_name,
         role: user.role_id,
+        role: user.role_name,
       });
     } catch (error) {
       return res.status(500).json({ message: "Internal server error" });

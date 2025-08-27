@@ -1,6 +1,6 @@
 const express = require("express");
-const configureGlobalMiddlewares = require("@/middlewares/global/global-middleware");
-const errorHandler = require("@/middlewares/global/error-handler");
+const { configureGlobalMiddlewares } = require("@/middlewares/global/global-middleware");
+const { errorHandler } = require("@/middlewares/global/error-handler");
 const routes = require("@/routes");
 
 const app = express();

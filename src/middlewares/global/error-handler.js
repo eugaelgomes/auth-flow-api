@@ -26,4 +26,4 @@ const errorHandler = {
   },
 };
 
-module.exports = errorHandler;
+module.exports = { errorHandler };

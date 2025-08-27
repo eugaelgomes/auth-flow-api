@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const UserRepository = require("@/repositories/user-repository");
-const welcome_message = require("@/services/email/templates/welcome-mail");
+const welcomeMailModule = require("@/services/email/templates/welcome-mail");
+const { welcome_message } = welcomeMailModule;
 
 const saltRounds = 12;
 
@@ -28,7 +29,7 @@ class UserController {
     }
 
     try {
-      let { name, username, email, password } = req.body;
+      let { name, username, email, password, role } = req.body;
       password = await bcrypt.hash(password, saltRounds);
       const userId = generateUserId(10);
       const createdAt = getCreationDate();
@@ -55,16 +56,15 @@ class UserController {
         name,
         email,
         username,
+        role,
         password,
         createdAt
       );
 
       // Envio do email de boas-vindas
-      try {
-        await welcome_message(name, email, username);
-      } catch (mailError) {
-        console.error("Error sending welcome email:", mailError);
-        // Não interrompe o fluxo se o email falhar
+      const mailResult = await welcome_message(name, email, username);
+      if (!mailResult.success) {
+        console.warn("Welcome email not sent:", mailResult.error);
       }
 
       res.status(201).send("User registered successfully!");

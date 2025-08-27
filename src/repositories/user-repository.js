@@ -29,10 +29,10 @@ class UserRepository {
   }
 
   // Create a new user
-  async createUser(userUid, name, email, username, password, createdAt) {
+  async createUser(userUid, name, email, username, role, password, createdAt) {
     const query = `
-      INSERT INTO users (user_uid, full_name, email, username, password, created_at) 
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO users (user_uid, full_name, email, username, role_name, password, created_at) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING user_db_id
     `;
     return await executeQuery(query, [
@@ -40,6 +40,7 @@ class UserRepository {
       name,
       email,
       username,
+      role,
       password,
       createdAt,
     ]);

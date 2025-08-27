@@ -1,9 +1,9 @@
-const { MailService } = require("../mail-service");
+const { MailService } = require("@/services/email/mail-service");
 
 async function welcome_message(nome, email, username) {
   try {
     let mailOptions = {
-      from: "support codaweb <support@codaweb.com>",
+      from: "support codaweb <support@codaweb.com.br>",
       to: email,
       subject: "Welcome to CodaWeb!",
       html: `
@@ -186,9 +186,11 @@ async function welcome_message(nome, email, username) {
 </html>`,
     };
     await MailService().sendMail(mailOptions);
-    return { success: True };
+
+    return { success: true };
   } catch (error) {
-    return { success: false, error: "Failed to send welcome email." };
+    console.error("Welcome email failed:", error);
+    return { success: false, error: error.message || "Failed to send welcome email." };
   }
 }
 

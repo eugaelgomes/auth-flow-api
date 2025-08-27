@@ -5,7 +5,7 @@ const { isAdmin } = require("@/middlewares/auth/auth-middleware");
 
 const router = express.Router();
 
-const userValidation = [
+const dataValidator = [
   body("name")
     .trim()
     .matches(/^[a-zA-Z\s]+$/)
@@ -16,12 +16,10 @@ const userValidation = [
   body("username")
     .trim()
     .matches(/^[a-zA-Z0-9._-]+$/)
-    .withMessage(
-      "Invalid characters, only letters, numbers, ., - or _ are allowed"
-    )
-    .isLength({ min: 6 })
+    .withMessage("Invalid characters, only letters, numbers, ., - or _ are allowed")
+    .isLength({ min: 6, max: 18 })
     .escape()
-    .withMessage("Username must be at least six (6) characters long."),
+    .withMessage("Username must be at least six (6) characters long and not exceed eighteen (18) characters."),
   body("email")
     .isEmail()
     .normalizeEmail({ all_lowercase: true, gmail_remove_dots: false })
@@ -32,11 +30,17 @@ const userValidation = [
     .withMessage(
       "Password must contain at least eight (8) characters, including letters, numbers, and symbols."
     ),
+  body("role")
+    .trim()
+    .isIn(["user", "admin"])
+    .withMessage("Role must be either 'user' or 'admin'.")
+    .isAlpha()
+    .withMessage("Role must contain only letters.")
 ];
 
 router.post(
   "/create-account",
-  userValidation,
+  dataValidator,
   UserController.createUser.bind(UserController)
 );
 router.get("/users", isAdmin, UserController.getAllUsers.bind(UserController));
