@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const pool = new Pool({
   host: process.env.DATABASE_HOST_URL,
-  port: parseInt(process.env.DATABASE_SERVICE_PORT, 10),
+  port: 17295,
   user: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
@@ -11,6 +11,7 @@ const pool = new Pool({
     rejectUnauthorized: false,
     ca: process.env.SSL_CERTIFICATE,
   },
+  connectionTimeoutMillis: 5000,
 });
 
 async function getConnection() {
