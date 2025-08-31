@@ -3,7 +3,8 @@ const nodemailer = require("nodemailer");
 function MailService() {
   try {
     return nodemailer.createTransport({
-      host: process.env.EMAIL_HOSTNAME,
+      // Set your email service smtp settings
+      host: "smtp.zoho.com",
       port: 465,
       secure: true,
       auth: {
@@ -12,7 +13,8 @@ function MailService() {
       },
     });
   } catch (error) {
-    throw error
+    console.log("Mail service error: ", error);
+    throw error;
   }
 }
 
